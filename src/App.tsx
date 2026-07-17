@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import spoilerCat from '../assets/spolier-alert-cat.jpg'
 import stairSkipping from '../assets/stair-skipping.jpg'
 import thankYou from '../assets/thank-you-chatgpt.jpeg'
+import thankYouSaves from '../assets/thank-you-saves-from-terminator.jpeg'
 import {
   AgentLoopVisual,
   AutoregressionVisual,
@@ -617,6 +618,74 @@ const slides: SlideDefinition[] = [
     ),
   },
   {
+    section: 'CUTTING EDGE',
+    railTitle: 'RLMs, block by block',
+    trace: [
+      { label: 'small active prompt', tone: 'plain' },
+      { label: 'inspect archive', tone: 'signal' },
+      { label: 'selected block', tone: 'context' },
+      { label: 'next call', tone: 'plain' },
+    ],
+    content: (
+      <section className="slide rlm-block-slide">
+        <header className="slide-heading slide-heading--inline">
+          <div>
+            <p className="eyebrow">RLMs, AS PHYSICAL BLOCKS</p>
+            <h1>Keep a small desk. Open the archive as needed.</h1>
+          </div>
+          <p>The model trades one enormous prompt for a sequence of focused calls.</p>
+        </header>
+
+        <div className="rlm-block-board" aria-label="Recursive language model context flow">
+          <article className="rlm-zone rlm-zone--desk">
+            <div className="rlm-zone-label"><b>01</b><span>ACTIVE DESK</span><small>small prompt</small></div>
+            <div className="rlm-stack">
+              <div className="rlm-context-block rlm-context-block--plain">current question</div>
+              <div className="rlm-context-block rlm-context-block--plain">recent turns</div>
+              <div className="rlm-context-block rlm-context-block--pointer">pointer → chat_archive</div>
+            </div>
+            <div className="rlm-model-block"><span>MODEL</span><strong>What should I inspect?</strong></div>
+          </article>
+
+          <div className="rlm-transport" aria-hidden="true">
+            <span>→</span>
+            <small>tool / code</small>
+          </div>
+
+          <article className="rlm-zone rlm-zone--archive">
+            <div className="rlm-zone-label"><b>02</b><span>CONTEXT ARCHIVE</span><small>outside the prompt</small></div>
+            <div className="rlm-archive-grid">
+              <div>block 01</div><div>block 02</div><div>block 03</div>
+              <div>block 18</div><div className="is-selected">block 19<br /><strong>relevant</strong></div><div>block 20</div>
+              <div>block 37</div><div>block 38</div><div>block 39</div>
+            </div>
+            <code>read(chat_archive, block_19)</code>
+          </article>
+
+          <div className="rlm-transport rlm-transport--return" aria-hidden="true">
+            <span>→</span>
+            <small>reload slice</small>
+          </div>
+
+          <article className="rlm-zone rlm-zone--next">
+            <div className="rlm-zone-label"><b>03</b><span>NEXT CALL</span><small>fresh packet</small></div>
+            <div className="rlm-stack">
+              <div className="rlm-context-block rlm-context-block--plain">current question</div>
+              <div className="rlm-context-block rlm-context-block--selected">retrieved · block 19</div>
+            </div>
+            <div className="rlm-model-block"><span>MODEL</span><strong>Answer—or inspect again</strong></div>
+          </article>
+        </div>
+
+        <div className="rlm-loop-note">
+          <span>NOT ENOUGH EVIDENCE?</span>
+          <strong>↺ inspect another block</strong>
+          <small>The recursion is across model calls. The weights did not remember the archive.</small>
+        </div>
+      </section>
+    ),
+  },
+  {
     section: 'THE FULL MECHANISM',
     railTitle: 'What actually reaches the model',
     trace: [
@@ -714,9 +783,15 @@ const slides: SlideDefinition[] = [
           <p>Just know which part kept the notes.</p>
           <div className="closing-takeaway">MODEL ≠ MEMORY &nbsp;·&nbsp; CONTEXT CREATES CONTINUITY</div>
         </div>
-        <div className="projected-photo projected-photo--square">
-          <img src={thankYou} alt="A man saying thank you to ChatGPT in case AI takes over the world" />
-          <span className="photo-index">END OF TAPE</span>
+        <div className="closing-media-stack">
+          <div className="projected-photo projected-photo--square closing-photo closing-photo--first">
+            <img src={thankYou} alt="A man saying thank you to ChatGPT in case AI takes over the world" />
+            <span className="photo-index">JUST IN CASE · 01</span>
+          </div>
+          <div className="projected-photo projected-photo--square closing-photo closing-photo--second">
+            <img src={thankYouSaves} alt="Robots spare a man because he always thanked ChatGPT" />
+            <span className="photo-index">END OF TAPE · 02</span>
+          </div>
         </div>
       </section>
     ),
