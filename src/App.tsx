@@ -362,6 +362,90 @@ const slides: SlideDefinition[] = [
       </section>
     ),
   },
+
+  {
+    section: 'WHY MANAGE CONTEXT',
+    railTitle: 'More than overflow',
+    trace: [
+      { label: 'relevant signal', tone: 'context' },
+      { label: 'irrelevant haystack', tone: 'alert' },
+      { label: 'current input', tone: 'plain' },
+    ],
+    content: (
+      <section className="slide readable-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">THE REAL MOTIVATION</p>
+          <h1>Context management is not only about fitting.</h1>
+        </header>
+        <div className="sentence-ladder">
+          <p>First, the context window can overflow.</p>
+          <p>Second, a larger prompt can dilute the useful signal.</p>
+          <p>Third, models may under-weight information buried in the middle.</p>
+          <p>So irrelevant context becomes pollution, not free knowledge.</p>
+        </div>
+        <aside className="speaker-example">Narration: one sticky note on a clean desk is helpful; one sticky note under a pile of unrelated notes is a search problem.</aside>
+      </section>
+    ),
+  },
+  {
+    section: 'MEMORY PRIMITIVE 01',
+    railTitle: 'Compaction has latency',
+    trace: [
+      { label: '200k old tokens', tone: 'alert' },
+      { label: '→ 10k summary', tone: 'context' },
+      { label: '~50s', tone: 'alert' },
+    ],
+    content: (
+      <section className="slide readable-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">ROLLING SUMMARIZATION, HONESTLY</p>
+          <h1>Summaries are better than dropping history, but they are not magic.</h1>
+        </header>
+        <div className="math-callout">
+          <span>200,000 tokens</span>
+          <b>compressed to 5%</b>
+          <span>10,000 output tokens</span>
+          <strong>≈ 50 seconds at 200 tok/s</strong>
+        </div>
+        <div className="sentence-ladder sentence-ladder--compact">
+          <p>Chatbots often do this under the hood.</p>
+          <p>Codex, Cursor, and Claude Code make it more explicit with auto-compact or summarize commands.</p>
+          <p>The trade-off is latency and loss: a summary cannot preserve every detail.</p>
+        </div>
+      </section>
+    ),
+  },
+  {
+    section: 'MEMORY VS KB',
+    railTitle: 'Two labels, same packet',
+    trace: [
+      { label: 'user preference', tone: 'context' },
+      { label: 'docs chunk', tone: 'context' },
+      { label: 'prompt', tone: 'plain' },
+    ],
+    content: (
+      <section className="slide comparison-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">A USEFUL DISTINCTION, NOT A HARD WALL</p>
+          <h1>Memory and knowledge base are human labels.</h1>
+        </header>
+        <div className="compare-cards">
+          <article>
+            <span>MEMORY</span>
+            <p>“The user prefers Python examples and short summaries.”</p>
+          </article>
+          <article>
+            <span>KNOWLEDGE BASE</span>
+            <p>“The billing webhook sends a signed retry event.”</p>
+          </article>
+          <article className="compare-cards__result">
+            <span>TO THE MODEL</span>
+            <p>Both are just retrieved text if the harness places them in the next prompt.</p>
+          </article>
+        </div>
+      </section>
+    ),
+  },
   {
     section: 'MEMORY PRIMITIVE 02',
     railTitle: 'Retrieve what matters',
@@ -374,12 +458,161 @@ const slides: SlideDefinition[] = [
       <section className="slide mechanism-slide">
         <header className="slide-heading slide-heading--inline">
           <div>
-            <p className="eyebrow">RETRIEVAL / RAG</p>
-            <h1>Index the library. Retrieve a slice.</h1>
+            <p className="eyebrow">CLASSIC RAG</p>
+            <h1>Retrieve once, then answer.</h1>
           </div>
-          <p>Semantic search is a context-selection pipeline, not memory inside the model.</p>
+          <p>A 20M-token docs site becomes a few relevant chunks in the prompt.</p>
         </header>
         <RetrievalVisual />
+      </section>
+    ),
+  },
+
+  {
+    section: 'AGENTIC TURN',
+    railTitle: 'Tools change retrieval',
+    trace: [
+      { label: 'JSON tool call', tone: 'signal' },
+      { label: 'search_memory()', tone: 'context' },
+      { label: 'set_preference()', tone: 'context' },
+    ],
+    content: (
+      <section className="slide readable-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">THE TOOL-CALLING TURN</p>
+          <h1>Once models can write reliable JSON, memory becomes interactive.</h1>
+        </header>
+        <div className="tool-script">
+          <code>{`{ "tool": "search_memory", "query": "billing webhook retries" }`}</code>
+          <code>{`{ "tool": "get_note", "id": "doc_184" }`}</code>
+          <code>{`{ "tool": "set_preference", "key": "style", "value": "concise" }`}</code>
+        </div>
+        <div className="sentence-ladder sentence-ladder--compact">
+          <p>The harness exposes tools with schemas.</p>
+          <p>The model decides when a tool call is worth it.</p>
+          <p>The agent loop can search, inspect, update, and only then answer.</p>
+        </div>
+      </section>
+    ),
+  },
+  {
+    section: 'AGENTIC RAG',
+    railTitle: 'The model explores',
+    trace: [
+      { label: 'model query 1', tone: 'signal' },
+      { label: 'results', tone: 'context' },
+      { label: 'model query 2', tone: 'signal' },
+      { label: 'answer', tone: 'plain' },
+    ],
+    content: (
+      <section className="slide timeline-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">FROM ONE-SHOT RAG TO AGENTIC RAG</p>
+          <h1>The retrieval process becomes part of reasoning.</h1>
+        </header>
+        <ol className="walkthrough">
+          <li><b>Classic RAG:</b> embed the user query, retrieve top chunks, answer.</li>
+          <li><b>Agentic RAG:</b> the model writes the search query itself.</li>
+          <li><b>Then it can refine:</b> search docs, open a result, search again, compare evidence.</li>
+          <li><b>Example:</b> “billing webhook” → “retry policy” → “migration note” → final answer.</li>
+        </ol>
+      </section>
+    ),
+  },
+  {
+    section: 'MEMORY SOURCES',
+    railTitle: 'Storage is a design choice',
+    trace: [
+      { label: 'vector db', tone: 'context' },
+      { label: 'key-value', tone: 'context' },
+      { label: 'temporal graph', tone: 'context' },
+      { label: 'filesystem', tone: 'context' },
+    ],
+    content: (
+      <section className="slide source-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">WHAT CAN A MEMORY SOURCE BE?</p>
+          <h1>Anything the harness can query or update.</h1>
+        </header>
+        <div className="source-grid">
+          <article><b>Vector database</b><span>Finds semantically similar chunks.</span></article>
+          <article><b>Key-value store</b><span>Stores simple stable facts and preferences.</span></article>
+          <article><b>Temporal graph</b><span>Tracks entities, relationships, and how facts change over time.</span></article>
+          <article><b>Filesystem / AST</b><span>Lets coding agents retrieve markdown, source files, and symbols.</span></article>
+          <article><b>Subagent</b><span>Delegates retrieval and returns a digest to the main agent.</span></article>
+        </div>
+      </section>
+    ),
+  },
+  {
+    section: 'MEMORY TYPES',
+    railTitle: 'Metaphors as policies',
+    trace: [
+      { label: 'short-term', tone: 'plain' },
+      { label: 'semantic', tone: 'context' },
+      { label: 'episodic', tone: 'context' },
+      { label: 'procedural', tone: 'context' },
+    ],
+    content: (
+      <section className="slide source-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">HUMAN WORDS, ENGINEERED SYSTEMS</p>
+          <h1>Memory types are useful metaphors for storage policy.</h1>
+        </header>
+        <div className="source-grid source-grid--four">
+          <article><b>Short-term</b><span>The immediate conversation or task window.</span></article>
+          <article><b>Semantic</b><span>Facts, concepts, entities, and relationships.</span></article>
+          <article><b>Episodic</b><span>Past interactions, preferences, and feedback.</span></article>
+          <article><b>Procedural</b><span>Repeatable workflows, tool habits, and project rituals.</span></article>
+        </div>
+      </section>
+    ),
+  },
+  {
+    section: 'HARD PARTS',
+    railTitle: 'Memory is infrastructure',
+    trace: [
+      { label: 'store?', tone: 'alert' },
+      { label: 'retrieve?', tone: 'alert' },
+      { label: 'privacy?', tone: 'alert' },
+      { label: 'scale?', tone: 'alert' },
+    ],
+    content: (
+      <section className="slide readable-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">THE HARD PROBLEMS REMAIN</p>
+          <h1>AI memory is still storage, retrieval, and governance.</h1>
+        </header>
+        <div className="sentence-ladder">
+          <p>The system must decide what is worth storing.</p>
+          <p>It must retrieve the right thing at the right time.</p>
+          <p>It must handle stale facts, conflicting facts, privacy, scale, and cost.</p>
+          <p>This is why memory-as-a-service products such as Mem0 and Zep exist.</p>
+        </div>
+      </section>
+    ),
+  },
+  {
+    section: 'CUTTING EDGE',
+    railTitle: 'Recursive language models',
+    trace: [
+      { label: 'old chat archived', tone: 'context' },
+      { label: 'tool access', tone: 'signal' },
+      { label: 'reload pieces', tone: 'plain' },
+    ],
+    content: (
+      <section className="slide timeline-slide">
+        <header className="slide-heading">
+          <p className="eyebrow">RLM INTUITION</p>
+          <h1>Move old context out, then let the model inspect it later.</h1>
+        </header>
+        <ol className="walkthrough">
+          <li>When the threshold is reached, old messages leave the active prompt.</li>
+          <li>They live in storage, a variable, or a REPL-like environment.</li>
+          <li>The model can call tools or write code to pull back the pieces it needs.</li>
+          <li>The current turn feels snappier than generating a giant summary.</li>
+          <li>The cost moves to later turns that spend compute recursively reloading context.</li>
+        </ol>
       </section>
     ),
   },
