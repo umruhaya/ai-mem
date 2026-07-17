@@ -354,9 +354,9 @@ const slides: SlideDefinition[] = [
         <header className="slide-heading slide-heading--inline">
           <div>
             <p className="eyebrow">ROLLING SUMMARIZATION</p>
-            <h1>Keep the meaning. Lose the raw tokens.</h1>
+            <h1>Compress, carry forward, repeat.</h1>
           </div>
-          <p>Useful compression — and inevitably lossy.</p>
+          <p>A second model call turns old chat into the next prompt’s summary.</p>
         </header>
         <CompactionVisual />
       </section>
@@ -375,9 +375,9 @@ const slides: SlideDefinition[] = [
         <header className="slide-heading slide-heading--inline">
           <div>
             <p className="eyebrow">RETRIEVAL / RAG</p>
-            <h1>Search the notebook before the call.</h1>
+            <h1>Index the library. Retrieve a slice.</h1>
           </div>
-          <p>Bring back only what looks relevant now.</p>
+          <p>Semantic search is a context-selection pipeline, not memory inside the model.</p>
         </header>
         <RetrievalVisual />
       </section>
