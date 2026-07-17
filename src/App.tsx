@@ -594,6 +594,106 @@ const slides: SlideDefinition[] = [
     ),
   },
   {
+    section: 'MEMORY SOURCES',
+    railTitle: 'Temporal graph memory',
+    trace: [
+      { label: 'entity', tone: 'plain' },
+      { label: 'relationship', tone: 'signal' },
+      { label: 'valid_from → valid_to', tone: 'context' },
+      { label: 'query at time t', tone: 'plain' },
+    ],
+    content: (
+      <section className="slide temporal-graph-slide">
+        <header className="slide-heading slide-heading--inline">
+          <div>
+            <p className="eyebrow">TEMPORAL GRAPH–BASED MEMORY</p>
+            <h1>A fact can be true—and then stop being true.</h1>
+          </div>
+          <p>Instead of overwriting a record, the system time-stamps relationships between entities.</p>
+        </header>
+
+        <div className="temporal-board">
+          <article className="temporal-canvas">
+            <div className="temporal-panel-heading">
+              <span>KNOWLEDGE GRAPH / RELATIONSHIPS WITH VALIDITY WINDOWS</span>
+              <small>example memory</small>
+            </div>
+
+            <div className="temporal-edge-list">
+              <div className="temporal-edge-row temporal-edge-row--expired">
+                <div className="graph-node graph-node--person"><small>PERSON</small><strong>Osama</strong></div>
+                <div className="graph-edge">
+                  <b>WORKS_AT</b>
+                  <span>valid · JAN 2022 → MAR 2025</span>
+                </div>
+                <div className="graph-node"><small>COMPANY</small><strong>Devsinc</strong></div>
+              </div>
+
+              <div className="temporal-edge-row temporal-edge-row--current">
+                <div className="graph-node graph-node--person"><small>PERSON</small><strong>Osama</strong></div>
+                <div className="graph-edge">
+                  <b>WORKS_AT</b>
+                  <span>valid · MAR 2025 → NOW</span>
+                </div>
+                <div className="graph-node"><small>COMPANY</small><strong>Carbonteq</strong></div>
+              </div>
+
+              <div className="temporal-edge-row">
+                <div className="graph-node graph-node--person"><small>PERSON</small><strong>Osama</strong></div>
+                <div className="graph-edge">
+                  <b>PREFERS</b>
+                  <span>valid · NOV 2024 → NOW</span>
+                </div>
+                <div className="graph-node"><small>UPDATE STYLE</small><strong>Async notes</strong></div>
+              </div>
+            </div>
+
+            <div className="temporal-axis" aria-label="Timeline from January 2022 to now">
+              <i></i>
+              <span>JAN 2022</span>
+              <b>MAR 2025 · change observed</b>
+              <span>NOW</span>
+            </div>
+          </article>
+
+          <aside className="temporal-query-panel">
+            <div className="temporal-panel-heading">
+              <span>ASK THE GRAPH</span>
+              <small>time changes the answer</small>
+            </div>
+
+            <div className="temporal-query">
+              <code>works_at(Osama, FEB 2025)?</code>
+              <span>→</span>
+              <strong>Devsinc</strong>
+            </div>
+            <div className="temporal-query temporal-query--now">
+              <code>works_at(Osama, NOW)?</code>
+              <span>→</span>
+              <strong>Carbonteq</strong>
+            </div>
+
+            <div className="temporal-edge-record">
+              <span>EVERY EDGE CAN CARRY</span>
+              <dl>
+                <div><dt>valid_from</dt><dd>when it became true</dd></div>
+                <div><dt>valid_to</dt><dd>when it stopped</dd></div>
+                <div><dt>observed_at</dt><dd>when memory learned it</dd></div>
+                <div><dt>source</dt><dd>where the claim came from</dd></div>
+              </dl>
+            </div>
+          </aside>
+        </div>
+
+        <div className="temporal-takeaway">
+          <div><span>FLAT RECORD</span><s>works_at = Devsinc</s><strong>works_at = Carbonteq</strong></div>
+          <b>→</b>
+          <p><strong>TEMPORAL GRAPH:</strong> preserve both facts, their order, and the evidence behind each change.</p>
+        </div>
+      </section>
+    ),
+  },
+  {
     section: 'CUTTING EDGE',
     railTitle: 'Recursive language models',
     trace: [

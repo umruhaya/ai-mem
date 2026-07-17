@@ -2748,6 +2748,350 @@
     background: color-mix(in oklch, var(--signal-soft) 70%, var(--surface));
   }
 
+  /* Temporal graph memory */
+  .temporal-graph-slide {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: clamp(0.65rem, 1.35vh, 1.1rem);
+    padding: 0.25rem 0;
+  }
+
+  .temporal-graph-slide .slide-heading h1 {
+    max-width: 15ch;
+    font-size: clamp(2.15rem, 3.45vw, 4.3rem);
+  }
+
+  .temporal-graph-slide .slide-heading > p {
+    max-width: 31rem;
+  }
+
+  .temporal-board {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.65fr);
+    gap: clamp(0.8rem, 1.7vw, 1.5rem);
+    min-height: 0;
+  }
+
+  .temporal-canvas,
+  .temporal-query-panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    padding: clamp(0.65rem, 1.1vw, 1rem);
+    border: 3px solid var(--line-strong);
+    background: var(--surface);
+  }
+
+  .temporal-canvas {
+    border-color: var(--primary-ink);
+    background: color-mix(in oklch, var(--primary-soft) 35%, var(--surface));
+    box-shadow: 0.45rem 0.45rem 0 color-mix(in oklch, var(--primary-ink) 15%, transparent);
+  }
+
+  .temporal-query-panel {
+    border-color: var(--signal);
+    background: color-mix(in oklch, var(--signal-soft) 42%, var(--surface));
+  }
+
+  .temporal-panel-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--line-strong);
+    font-family: var(--mono);
+  }
+
+  .temporal-panel-heading span {
+    font-size: clamp(0.57rem, 0.68vw, 0.73rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .temporal-panel-heading small {
+    color: var(--muted);
+    font-size: clamp(0.5rem, 0.59vw, 0.63rem);
+    text-align: right;
+  }
+
+  .temporal-edge-list {
+    display: grid;
+    align-content: center;
+    gap: clamp(0.4rem, 0.8vh, 0.65rem);
+    flex: 1;
+    min-height: 0;
+    padding-block: clamp(0.45rem, 0.9vh, 0.75rem);
+  }
+
+  .temporal-edge-row {
+    display: grid;
+    grid-template-columns: minmax(7rem, 0.7fr) minmax(10rem, 1.2fr) minmax(8rem, 0.8fr);
+    align-items: stretch;
+    gap: clamp(0.45rem, 0.8vw, 0.75rem);
+  }
+
+  .graph-node {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    min-width: 0;
+    padding: clamp(0.5rem, 0.85vw, 0.78rem);
+    border: 3px solid var(--line-strong);
+    background: var(--surface);
+  }
+
+  .graph-node--person {
+    border-color: var(--signal);
+    background: var(--signal-soft);
+    color: var(--signal);
+  }
+
+  .graph-node small {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: clamp(0.49rem, 0.58vw, 0.62rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .graph-node strong {
+    overflow: hidden;
+    font-size: clamp(0.86rem, 1.15vw, 1.25rem);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .graph-edge {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    color: var(--primary-ink);
+    text-align: center;
+  }
+
+  .graph-edge::before,
+  .graph-edge::after {
+    position: absolute;
+    top: 50%;
+    height: 3px;
+    background: currentColor;
+    content: "";
+    transform: translateY(-50%);
+  }
+
+  .graph-edge::before {
+    right: 52%;
+    left: 0;
+  }
+
+  .graph-edge::after {
+    right: 0;
+    left: 52%;
+  }
+
+  .graph-edge b,
+  .graph-edge span {
+    position: relative;
+    z-index: 1;
+    padding-inline: 0.4rem;
+    background: var(--surface);
+    font-family: var(--mono);
+  }
+
+  .graph-edge b {
+    font-size: clamp(0.62rem, 0.78vw, 0.84rem);
+    letter-spacing: 0.08em;
+  }
+
+  .graph-edge span {
+    color: var(--muted);
+    font-size: clamp(0.48rem, 0.58vw, 0.62rem);
+    font-weight: 800;
+  }
+
+  .temporal-edge-row--expired {
+    opacity: 0.68;
+  }
+
+  .temporal-edge-row--expired .graph-edge {
+    color: var(--alert);
+  }
+
+  .temporal-edge-row--expired .graph-node:last-child {
+    border-color: var(--alert);
+    background: var(--alert-soft);
+  }
+
+  .temporal-edge-row--current .graph-edge {
+    color: var(--primary-ink);
+  }
+
+  .temporal-edge-row--current .graph-node:last-child {
+    border-color: var(--primary-ink);
+    background: var(--primary-soft);
+    color: var(--primary-ink);
+    box-shadow: 0.24rem 0.24rem 0 color-mix(in oklch, var(--primary-ink) 15%, transparent);
+  }
+
+  .temporal-axis {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    align-items: end;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: clamp(0.5rem, 0.61vw, 0.66rem);
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .temporal-axis i {
+    position: absolute;
+    top: 0.25rem;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--alert) 0 52%, var(--primary-ink) 52% 100%);
+  }
+
+  .temporal-axis b {
+    color: var(--alert);
+    font-size: inherit;
+  }
+
+  .temporal-query {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.35rem 0.5rem;
+    margin-top: clamp(0.5rem, 1vh, 0.75rem);
+    padding: clamp(0.55rem, 0.85vw, 0.8rem);
+    border: 2px solid var(--alert);
+    background: var(--alert-soft);
+  }
+
+  .temporal-query code {
+    overflow: hidden;
+    color: var(--muted);
+    font-size: clamp(0.56rem, 0.7vw, 0.75rem);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .temporal-query span {
+    grid-row: 1 / 3;
+    grid-column: 2;
+    align-self: center;
+    color: var(--alert);
+    font-size: 1.35rem;
+    font-weight: 900;
+  }
+
+  .temporal-query strong {
+    color: var(--alert);
+    font-size: clamp(0.92rem, 1.3vw, 1.4rem);
+  }
+
+  .temporal-query--now {
+    border-color: var(--primary-ink);
+    background: var(--primary-soft);
+  }
+
+  .temporal-query--now span,
+  .temporal-query--now strong {
+    color: var(--primary-ink);
+  }
+
+  .temporal-edge-record {
+    margin-top: auto;
+    padding-top: clamp(0.55rem, 1vh, 0.8rem);
+    border-top: 2px dashed var(--line-strong);
+  }
+
+  .temporal-edge-record > span {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: clamp(0.52rem, 0.62vw, 0.66rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .temporal-edge-record dl {
+    display: grid;
+    gap: 0.3rem;
+    margin: 0.45rem 0 0;
+  }
+
+  .temporal-edge-record dl > div {
+    display: grid;
+    grid-template-columns: minmax(5rem, 0.75fr) 1fr;
+    gap: 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(0.54rem, 0.68vw, 0.72rem);
+  }
+
+  .temporal-edge-record dt {
+    color: var(--signal);
+    font-family: var(--mono);
+    font-weight: 900;
+  }
+
+  .temporal-edge-record dd {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .temporal-takeaway {
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.9fr) auto minmax(0, 1.25fr);
+    align-items: center;
+    gap: clamp(0.7rem, 1.4vw, 1.2rem);
+    padding: clamp(0.5rem, 0.85vw, 0.72rem) clamp(0.65rem, 1vw, 0.9rem);
+    border: 2px solid var(--line-strong);
+    background: color-mix(in oklch, var(--surface) 75%, transparent);
+  }
+
+  .temporal-takeaway > div {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    font-family: var(--mono);
+    font-size: clamp(0.54rem, 0.66vw, 0.71rem);
+  }
+
+  .temporal-takeaway span {
+    color: var(--muted);
+    font-weight: 900;
+  }
+
+  .temporal-takeaway s {
+    color: var(--alert);
+  }
+
+  .temporal-takeaway > b {
+    color: var(--signal);
+    font-size: 1.4rem;
+  }
+
+  .temporal-takeaway p {
+    margin: 0;
+    font-size: clamp(0.68rem, 0.88vw, 0.94rem);
+    line-height: 1.2;
+  }
+
+  .temporal-takeaway p strong {
+    color: var(--primary-ink);
+  }
+
   /* Recursive language models, block by block */
   .rlm-block-slide {
     display: grid;
@@ -3041,6 +3385,19 @@
 
     .closing-media-stack .projected-photo--square {
       width: min(16rem, 36vw);
+    }
+
+    .temporal-board,
+    .temporal-takeaway {
+      grid-template-columns: 1fr;
+    }
+
+    .temporal-edge-row {
+      grid-template-columns: 1fr;
+    }
+
+    .graph-edge {
+      min-height: 3rem;
     }
   }
 }
